@@ -1,0 +1,43 @@
+body{
+    font-family: 'Arial';
+}
+/* .card{
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+
+    background-color: #FFDEE9;
+    background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+
+    background-image: linear-gradient( 174.2deg,  rgba(255,244,228,1) 7.1%, rgba(240,246,238,1) 67.4% );
+    background-image: linear-gradient( 400.2deg,  rgba(255,244,228,1) 10.1%, rgba(240,246,238,1) 46.4% );
+    background-image: linear-gradient(to top, #d2dde4 0%, #eff5f8 100%);
+
+} */
+.card{
+    border: 2px;
+    border-radius: 10px;   
+}
+
+.login_link:hover{
+    letter-spacing: 3px;
+    transition: .5s;
+}
+.register_btn:hover{
+    letter-spacing: 1px;
+    transition: .5s;
+}         
+.btn {
+    background-image: linear-gradient(to right, #603813 0%, #977e6f  51%, #603813  100%);
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+

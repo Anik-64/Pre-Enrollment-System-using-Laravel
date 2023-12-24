@@ -21,6 +21,7 @@ class CreateEnrollmentsTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('type');
             $table->string('session_name');
+            $table->string('current_semester');
             $table->timestamps();
         });
     }

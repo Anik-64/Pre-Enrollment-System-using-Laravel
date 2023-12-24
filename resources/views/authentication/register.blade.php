@@ -47,11 +47,11 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" value="{{ Session::get('name') }}" name="name" placeholder="Enter your name">
+                        <input type="text" class="form-control" id="name" value="{{ Session::get('name') }}" name="name" placeholder="Jhon Wick">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" value="{{ Session::get('email') }}" name="email" placeholder="Enter your email">
+                        <input type="email" class="form-control" id="email" value="{{ Session::get('email') }}" name="email" placeholder="xyz@gmail.com">
                         <small class="form-text text-danger" id="email_error"></small>
                     </div>
                     <div class="form-group">
@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group">
                         <label for="confirm">Confirm password</label>
-                        <input type="password" class="form-control" id="confirm" name="confirm">
+                        <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter your password">
                         <small class="form-text text-danger" id="confirm_error">{{ Session::get('error') }}</small>
                     </div>
                     <div class="form-group">

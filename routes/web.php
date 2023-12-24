@@ -67,6 +67,8 @@ Route::middleware(['isLoggedIn'])->group(function () {
         Route::post('change-admin-password', [allController::class, 'changeAdminPassword']);
         
         Route::get('login-details', [allController::class, 'loginDetails']);
+
+        Route::get('enrollment-details', [allController::class, 'enrollmentDetails']);
     });
 
     Route::middleware(['isStudent'])->group(function(){

@@ -19,14 +19,13 @@ class PreEnrollmentExport implements FromView,ShouldAutoSize,WithStyles
 
     public function view(): View
     {
-        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))->groupBy('course_id', 'type')
-            ->where('type', '!=', 'Regular')
+        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
+            ->groupBy('course_id', 'type')
+            ->where('type', 'not like', '%'.'Regular'.'%')
             ->orderBy('total', 'desc')
             ->get('total', 'course_id', 'type');
 
-        return view('admin.pages.excelView.preEnrollmentExcel', [
-            'preEnrollmentDetails' => $data
-        ]);
+        return view('admin.pages.excelView.preEnrollmentExcel', compact('data'));
     }
 
     public function styles(Worksheet $sheet)

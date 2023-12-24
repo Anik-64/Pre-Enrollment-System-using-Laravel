@@ -35,9 +35,9 @@
     <hr>
     
     <div class="default-img-container">
-        <img src="{{ asset('img/nature2.gif') }}" alt="" class="img-fluid mx-auto d-block mt-5" id="default-img">
+        <img src="{{ asset('img/department_02.jpg') }}" alt="" class="img-fluid mx-auto d-block" id="default-img">
     </div>
-    
+    <!-- width: auto; height: 100px; -->
     <form method="post" action="{{ url('store-department') }}">
         @csrf
         <div class="card mb-2" style="display: none">

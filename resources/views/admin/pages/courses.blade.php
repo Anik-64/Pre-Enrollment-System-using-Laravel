@@ -31,12 +31,12 @@
                 <table class="table table-hover table-responsive-md">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="col-6">Course name</th>
+                            <th class="col-5">Course name</th>
                             <th>Course code</th>
                             <th>Credit hour</th>
                             <th>Department</th>
                             <th>Semester</th>
-                            <th class="col-md-1 text-center">Action</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>

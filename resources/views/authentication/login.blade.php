@@ -37,7 +37,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" value="{{ Session::get('email') }}" id="email" name="email" placeholder="Enter your email">
+                        <input type="email" class="form-control" value="{{ Session::get('email') }}" id="email" name="email" placeholder="xyz@gmail.com">
                         <small class="form-text text-danger" id="email_error">
                             @if(Session::has('blank_user_field'))
                                 {{ Session::get('blank_user_field') }}
@@ -62,7 +62,6 @@
                     </div>
                 </form>
                 <div class="mb-2"><a href="{{ url('/') }}" class="text-dark register_btn">Do you have an account?</a></div>
-                <div class=""><a href="{{ url('forget-password') }}" class="text-dark register_btn">Forget password?</a></div>
             </div>
         </div>
     </div>

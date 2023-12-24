@@ -63,7 +63,7 @@
                         @foreach($session_info as $s)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $s->name }}( B.Sc. )</td>
+                                <td>{{ $s->name }} ( B.Sc. )</td>
                                 <td>
                                     @if($s->status == 'Active')
                                         <span class="badge badge-success">{{ $s->status }}</span>

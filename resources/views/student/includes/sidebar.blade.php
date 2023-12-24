@@ -53,7 +53,7 @@
         </a>
         <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom sections:</h6>
+                <!-- <h6 class="collapse-header">Custom sections:</h6> -->
                 <a class="collapse-item" href="{{ url('enrollment') }}">Enrollment</a>
                 <a class="collapse-item active" href="{{ url('pending-enrollment') }}">Pending list</a>
             </div>
@@ -68,7 +68,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom sections:</h6>
+                <!-- <h6 class="collapse-header">Custom sections:</h6> -->
                 <a class="collapse-item" href="{{ url('enrollment') }}">Enrollment</a>
                 <a class="collapse-item" href="{{ url('pending-enrollment') }}">Pending list</a>
             </div>
@@ -77,19 +77,19 @@
     @endif
     
     <!-- Divider -->
-    <hr class="sidebar-divider">
+    <!-- <hr class="sidebar-divider"> -->
 
     <!-- Heading -->
-    <div class="sidebar-heading">
+    <!-- <div class="sidebar-heading">
         Addons
-    </div>
+    </div> -->
 
     <!-- Nav Item - Charts -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-sign-in-alt"></i>
             <span>Login details</span></a>
-    </li>
+    </li> -->
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

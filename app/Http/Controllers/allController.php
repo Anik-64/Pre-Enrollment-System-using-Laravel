@@ -94,7 +94,7 @@ class allController extends Controller
 
         $fetch_teacher = teacher::where('t_email', $email)->first();
 
-        if($fetch_teacher){
+        if($fetch_teacher && Hash::check($password, $fetch_teacher->t_password)){
             if($fetch_teacher->role == 'admin'){
                 $time = Carbon::now()->timezone('Asia/Dhaka')->format('Y-m-d H:i:s');
                 DB::table('login_details')->insert([
@@ -117,7 +117,7 @@ class allController extends Controller
             if(!$fetch_student){  
                 return redirect()->back()->with('registration_error', 'You are not registerd. Please register first.');
             }                      
-            if($email == $fetch_student->email && !Hash::check($password,$fetch_student->password)){
+            if($email == $fetch_student->email && !Hash::check($password, $fetch_student->password)){
                 return redirect()->back()
                 ->with(['password_error' => '*Wrong password', 'email' => $fetch_student->email]);
             }
@@ -174,19 +174,21 @@ class allController extends Controller
         return redirect('login');
     }
 
-    public function loginDetails(){
-        $login_data = DB::table('login_details')->orderBy('id', 'desc')->get();
-        return view('admin.pages.loginDetails', compact('login_data'));
-    }
-
+// Admin section 
     public function adminDashboard(){
         return view('admin.pages.adminDashboard', 
             ['student_data' => registration::count(), 
             'course_data' => course::count(),
             'department_data' => department::count(),
             'teacher_data' => teacher::count(),
-            'enrollment_data' => enrollment::count()
+            'enrollment_data' => enrollment::distinct('student_id')->count(),
+            'total_overlap_student' => enrollment::where('type', '!=', 'Regular')->count()
             ]);
+    }
+
+    public function loginDetails(){
+        $login_data = DB::table('login_details')->orderBy('id', 'desc')->get();
+        return view('admin.pages.loginDetails', compact('login_data'));
     }
 
     public function changeAdminPassword(Request $rqt){
@@ -208,6 +210,11 @@ class allController extends Controller
         toast('Password is updated successfully','success')->autoClose(4000);
 
         return redirect()->back();
+    }
+
+    public function enrollmentDetails(){
+        $enrollment_details = enrollment::get();
+        return view('admin.pages.enrollmentDetails', compact('enrollment_details'));
     }
 
     // Create Session
@@ -261,12 +268,12 @@ class allController extends Controller
 
         if($get_status->status == 'Active'){
             SessionInfo::where('session_id', $id)->update(['status' => 'Inactive']);
-            toast('Session status deactivated successfully','info')->autoClose(4000);
+            toast('Session status deactivated successfully', 'info')->autoClose(4000);
             return redirect()->back();
         }
         if($get_status->status == 'Inactive'){
             SessionInfo::where('session_id', $id)->update(['status' => 'Active']);
-            toast('Session status activated successfully','info')->autoClose(4000);
+            toast('Session status activated successfully', 'info')->autoClose(4000);
             return redirect()->back();
         }
         
@@ -398,21 +405,6 @@ class allController extends Controller
 
         return redirect()->back(); 
     }
-
-    // public function duplicateCourse(Request $rqt){
-    //     $course_name = $rqt->courseName;
-    //     $check = course::where('course_name', $course_name)->first();
-    //     if($check){
-    //         return response()->json([
-    //             'duplicate' => $check
-    //         ]);
-    //     }else{
-    //         return response()->json([
-    //             'duplicate' => 'Not found'
-    //         ]);
-    //     }
-    // }
-    // End of Create Course section
 
     // Create Department Section
     public function createDepartment(){
@@ -610,6 +602,45 @@ class allController extends Controller
     }
     // End of create Teacher Section
 
+    // Preenrollment
+    public function preEnrollment(){
+        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
+            ->groupBy('course_id', 'type')
+            ->where('type', 'not like', '%'.'Regular'.'%')
+            ->orderBy('total', 'desc')
+            ->get('total', 'course_id', 'type');
+        
+        return view('admin.pages.preEnrollment', compact('data'));
+    }
+
+    public function viewPdf(){
+        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
+            ->groupBy('course_id', 'type')
+            ->where('type', '!=', 'Regular')
+            ->orderBy('total', 'desc')
+            ->get('total', 'course_id', 'type');
+
+        $pdf = PDF::loadView('admin.pages.pdf.viewPdf', compact('data'))->setPaper('a4', 'landscape');
+        return $pdf->stream();
+    }
+
+    public function generatePdf(){
+        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
+            ->groupBy('course_id', 'type')
+            ->where('type', '!=', 'Regular')
+            ->orderBy('total', 'desc')
+            ->get('total', 'course_id', 'type');
+
+        $pdf = PDF::loadView('admin.pages.pdf.pdfPreEnrollment', compact('data'));
+        return $pdf->download('preEnrollmentDetails.pdf');
+    }
+
+    public function export(){
+        return Excel::download(new PreEnrollmentExport, 'preEnrollmentDetails.xlsx');
+    }
+    // End of PreEnrollment
+// End of Admin Section
+
     // Student information
     public function studentDashboard(){
         $data = registration::where('student_id', Session::get('student_id'))->first();
@@ -760,8 +791,8 @@ class allController extends Controller
             }
         }
         
-        $arr = ['1semester' => $semester_1, '2semester' => $semester_2, '3semester' => $semester_3,'4semester' => $semester_4, 
-                '5semester' => $semester_5, '6semester' => $semester_6, '7semester' => $semester_7, '8semester' => $semester_8];        
+        $arr = ['1st' => $semester_1, '2nd' => $semester_2, '3rd' => $semester_3, '4th' => $semester_4, 
+                '5th' => $semester_5, '6th' => $semester_6, '7th' => $semester_7, '8th' => $semester_8];        
         $max_semester = array_keys($arr, max($arr));
 
         $student_type = array_filter($student_type); // remove null values
@@ -786,7 +817,8 @@ class allController extends Controller
                 'student_id' => $student_id_arr[$i],
                 'course_id' => intval($course_id[$i]),
                 'type' => $student_type_arr[$i],
-                'session_name' => $session_arr[$i]
+                'session_name' => $session_arr[$i],
+                'current_semester' => implode($max_semester)
             ]);
         }
 
@@ -812,40 +844,4 @@ class allController extends Controller
     }
     // End of student information
 
-    // Preenrollment
-    public function preEnrollment(){
-        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))->groupBy('course_id', 'type')
-        ->where('type', '!=', 'Regular')
-        ->orderBy('total', 'desc')
-        ->get('total', 'course_id', 'type');
-        
-        return view('admin.pages.preEnrollment', compact('data'));
-    }
-
-    public function viewPdf(){
-        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
-            ->groupBy('course_id', 'type')
-            ->where('type', '!=', 'Regular')
-            ->orderBy('total', 'desc')
-            ->get('total', 'course_id', 'type');
-
-        $pdf = PDF::loadView('admin.pages.pdf.viewPdf', compact('data'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
-    }
-
-    public function generatePdf(){
-        $data = enrollment::select('course_id', 'type', DB::raw('count(*) as total'))
-            ->groupBy('course_id', 'type')
-            ->where('type', '!=', 'Regular')
-            ->orderBy('total', 'desc')
-            ->get('total', 'course_id', 'type');
-
-        $pdf = PDF::loadView('admin.pages.pdf.pdfPreEnrollment', compact('data'));
-        return $pdf->download('preEnrollmentDetails.pdf');
-    }
-
-    public function export(){
-        return Excel::download(new PreEnrollmentExport, 'preEnrollmentDetails.xlsx');
-    }
-    // End of PreEnrollment
 }

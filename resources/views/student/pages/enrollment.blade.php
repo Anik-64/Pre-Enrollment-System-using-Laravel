@@ -26,14 +26,14 @@
     @if(Session::has('success'))
         <div class="alert alert-success">{{ Session::get('success') }}&nbsp<i class="fas fa-check"></i></div>
     @endif
-    <table class="table table-hover table-bordered table-responsive-md" id="erollment_table" style="display: none">
+    <table class="table table-hover table-sm table-bordered table-responsive-md" id="erollment_table" style="display: none">
         <thead class="bg-gray-200">
             <tr>
                 <th style="width: 20px">No.</th>
                 <th class="col-5">Course name</th>
-                <th>Course code</th>
-                <th>Semester</th>
-                <th>Type</th>
+                <th class="text-center">Course code</th>
+                <th class="text-center">Semester</th>
+                <th class="text-center">Type</th>
             </tr>
         </thead>
         <tbody>
@@ -51,9 +51,9 @@
                     <tr>
                         <td><input type="checkbox" id="course_id{{ $c->id }}" value="{{ $c->id }}" name="course_id[]" aria-label="Checkbox for following text input"></td>
                         <td>{{ $c->course_name }}</td>
-                        <td>{{ $c->course_code }}</td>
-                        <td>{{ $c->semester }}</td>
-                        <td>
+                        <td class="text-center">{{ $c->course_code }}</td>
+                        <td class="text-center">{{ $c->semester }}</td>
+                        <td class="text-center">
                             <select id="student_type{{ $c->id }}" name="student_type[]" class="form-control">
                                 <option value="">Select type</option>
                                 <option value="Regular">Regular</option>

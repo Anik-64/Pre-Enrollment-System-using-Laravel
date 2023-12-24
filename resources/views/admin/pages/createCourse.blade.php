@@ -44,7 +44,7 @@
     </div>
     <hr>
     <div class="default-img-container">
-        <img src="{{ asset('img/nature3.gif') }}" alt="" class="img-fluid mx-auto d-block mt-5" id="default-img" style="height: auto; width: 60%">
+        <img src="{{ asset('img/courses_01.jpg') }}" alt="" class="img-fluid mx-auto d-block" id="default-img" style="height: auto; width: 60%">
     </div>
     <form method="post" action="{{ url('store-course') }}">
         @csrf

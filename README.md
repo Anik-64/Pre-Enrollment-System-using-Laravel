@@ -9,7 +9,7 @@ This project is designed for a university pre-enrollment system, featuring two r
   - View all available courses and their credit hours
   - Create enrollment
 
-- Admins can:
+- Admin can:
   - Modify courses and credit hours
   - Modify departments
   - Can control the enrollment using active or inactive the sessions ( like as spring, fall )

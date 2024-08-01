@@ -12,6 +12,7 @@ This project is designed for a university pre-enrollment system, featuring two r
 - Admins can:
   - Modify courses and credit hours
   - Modify departments
+  - Can control the enrollment using active or inactive the sessions(like as spring, fall)
   - View system login information
   - Take actions based on overlapping student enrollments
   - Print overlapping student details
